@@ -3,6 +3,7 @@ from datetime import datetime
 import CommonLayer
 from DataAccessLayer import *
 import CommonLayer.State.user_state
+from CommonLayer.model.response import Response
 
 
 def performance_logger_decorator(class_name):
@@ -14,16 +15,19 @@ def performance_logger_decorator(class_name):
             output = main_function(*args, **kwargs)
             end_time = time.time()
             execution_time = end_time - start_time
-            user_id = CommonLayer.State.user_state.current_user_id
+            try:
+                user_id = CommonLayer.State.user_state.current_user_id
+                cursor= conn.cursor()
+                query = """
+                insert into performance_logger (function_name, execution_time, call_datetime, user_id, class_name)
+                values (?, ?, ?, ?, ?)            
+                """
+                information = (function_name, execution_time, call_datetime, user_id, class_name)
+                cursor.execute(query, information)
+                conn.commit()
+            except Exception as error:
+                return Response(False, None, error.args[0])
 
-            cursor= conn.cursor()
-            query = """
-            insert into performance_logger (function_name, execution_time, call_datetime, user_id, class_name)
-            values (?, ?, ?, ?, ?)            
-            """
-            information = (function_name, execution_time, call_datetime, user_id, class_name)
-            cursor.execute(query, information)
-            conn.commit()
 
             return output
         return wrapper

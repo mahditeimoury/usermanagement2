@@ -8,6 +8,7 @@ class UserDataAccess:
                            first_name,
                            last_name,
                            user_name,
+                           password,
                            status,
                            role_id
                            from users
@@ -18,7 +19,7 @@ class UserDataAccess:
         # cursor.close()
         # conn.close()
         if data:
-            return User(data[0], data[1], data[2], data[3], None, data[4], data[5])
+            return User(data[0], data[1], data[2], data[3], data[4], data[5], data[6])
 
     def register_user(self, first_name, last_name, username, password):
         cursor = conn.cursor()
@@ -41,6 +42,7 @@ class UserDataAccess:
                     first_name,
                     last_name,
                     user_name,
+                    password,
                     status,
                     role_id
                     from users
@@ -50,7 +52,7 @@ class UserDataAccess:
         data_list = cursor.execute(query, information).fetchall()
 
         for data in data_list:
-            user=User(data[0], data[1], data[2], data[3], None, data[4], data[5])
+            user=User(data[0], data[1], data[2], data[3], data[4], data[5], data[6])
             user_list.append(user)
 
         return user_list
@@ -94,7 +96,7 @@ class UserDataAccess:
 
         data_list = cursor.execute(query).fetchall()
         for data in data_list:
-            user=User(data[0], data[1], data[2], data[3], None, data[4], data[5])
+            user=User(data[0], data[1], data[2], data[3], data[4], data[5], data[6])
             user_list.append(user)
 
         return user_list

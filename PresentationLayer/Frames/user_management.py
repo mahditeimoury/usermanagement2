@@ -105,6 +105,7 @@ class UserManagementFrame(Frame):
         if response.success:
             user_list = response.data
             self.load_data_treeview(user_list)
+            self.update_table()
         else:
             messagebox.showerror("Error", message=response.message)
             self.main_view.switch_frame("login")
@@ -116,6 +117,7 @@ class UserManagementFrame(Frame):
         if response.success:
             user_list = response.data
             self.load_data_treeview(user_list)
+            self.update_table()
         else:
             messagebox.showerror("Error", message=response.message)
             self.main_view.switch_frame("login")
@@ -127,6 +129,7 @@ class UserManagementFrame(Frame):
         if response.success:
             user_list = response.data
             self.load_data_treeview(user_list)
+            self.update_table()
         else:
             messagebox.showerror("Error", message=response.message)
             self.main_view.switch_frame("login")

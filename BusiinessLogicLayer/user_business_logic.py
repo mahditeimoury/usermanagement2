@@ -3,6 +3,7 @@ from CommonLayer.model.response import Response
 import CommonLayer.State.user_state
 from CommonLayer.Decorators.performance_logger import performance_logger_decorator
 from DataAccessLayer.user_data_access import UserDataAccess
+from CommonLayer.Entities.user import User
 import hashlib
 
 
@@ -10,10 +11,12 @@ class UserBusinessLogic:
     def __init__(self):
         self.user_data_access = UserDataAccess()
 
-    @performance_logger_decorator("UserBusinessLogic")
+    # @performance_logger_decorator("UserBusinessLogic")
     def login(self, username, password):
-        if len(username) < 3 or len(password) < 6:
-            return Response(False, None, "invalid username or password")
+        try:
+            user = User(None, None, None, username, password, None, None)
+        except ValueError as error:
+            return Response(False, None, error.args[0])
         # hash password
         password_hash = hashlib.md5(password.encode()).hexdigest()
 
@@ -31,12 +34,13 @@ class UserBusinessLogic:
         else:
             return Response(False, None, "Invalid username or password")
 
-    @performance_logger_decorator("UserBusinessLogic")
+    # @performance_logger_decorator("UserBusinessLogic")
     def register(self, first_name, last_name, username, password):
 
         password_hash = hashlib.md5(password.encode()).hexdigest()
         try:
             self.user_data_access.register_user(first_name, last_name, username, password_hash)
+
         except:
             return Response(False, None, "User Name Exists Please Choose A Different One")
 

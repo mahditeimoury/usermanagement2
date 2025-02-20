@@ -8,6 +8,26 @@ class User:
         self.status = status
         self.role_id = role_id
 
+    @property
+    def username(self):
+        return self._username
+
+    @username.setter
+    def username(self, value):
+        if not isinstance(value, str) or len(value) < 3:
+            raise ValueError("Invalid value for username it should be a string and more than 3 characters")
+        self._username = value
+
+    @property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, value):
+        if not isinstance(value, str) or len(value) < 6:
+            raise ValueError("Invalid value for password it should be more than 6 characters")
+        self._password = value
+
     def update(self,new_firstname, new_lastname, new_username, new_password, new_status, new_role):
         self.first_name = new_firstname
         self.last_name = new_lastname
